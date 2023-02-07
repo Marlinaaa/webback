@@ -5,7 +5,6 @@ const mongoose = require("mongoose");
 const { all } = require("bluebird");
 const Cars = require("./schema/cars");
 const cors = require("cors");
-const { request, response } = require("express");
 const uri =
   "mongodb+srv://mba:saKppmWyiOhaVYpR@cluster0.xfyfef4.mongodb.net/?retryWrites=true&w=majority";
 mongoose.set("strictQuery", false);
@@ -19,6 +18,10 @@ mongoose.connect(
 
 app.use(cors());
 app.get("/", (reqeust, response) => {
+  response.status(200).send("Welcome")
+})
+
+app.get("/data", (reqeust, response) => {
   response.header("Access-Control-Allow-Origin", "*");
   response.header(
     "Access-Control-Allow-Headers",
