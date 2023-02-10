@@ -1,12 +1,12 @@
 const express = require("express");
 const app = express();
-const port = 5000;
+const port = process.env.port || 5001;
 const mongoose = require("mongoose");
-const { all } = require("bluebird");
 const Cars = require("./schema/cars");
-const cors = require("cors");
+const cors = require("cors"); //secure
+const { request, response } = require("express");
 const uri =
-  "mongodb+srv://mba:saKppmWyiOhaVYpR@cluster0.xfyfef4.mongodb.net/?retryWrites=true&w=majority";
+  "mongodb+srv://mba:saKppmWyiOhaVYpR@cluster0.xfyfef4.mongodb.net/?retryWrites=true&w=majority"; // url
 mongoose.set("strictQuery", false);
 mongoose.connect(
   uri,
@@ -18,15 +18,9 @@ mongoose.connect(
 
 app.use(cors());
 app.get("/", (reqeust, response) => {
-  response.status(200).send("Welcome")
-})
-
-app.get("/data", (reqeust, response) => {
-  response.header("Access-Control-Allow-Origin", "*");
-  response.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  );
+  response.status(200).send("Welcome");
+});
+app.get("/cardata", (reqeust, response) => {
   Cars.find({}, (err, res) => {
     if (err !== null) {
       response.status(500).send("ERROR");
@@ -37,8 +31,6 @@ app.get("/data", (reqeust, response) => {
       response.status(200).send(backdata);
     }
   });
-
-  // res.send("Hello World!");
 });
 
 app.listen(port, () => {
